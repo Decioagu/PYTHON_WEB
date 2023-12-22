@@ -40,7 +40,7 @@
 
 terminal:
 .\venv\Scripts\activate # ambiente virtual
-py -m http.server -d SITE_001/ 3333 # atival servidor "http"
+py -m http.server -d SITE_001/ 3333 # ativa servidor "HTTP" (localhost)
 
 Abra um navegador:
-http://localhost:3333/ # acesse
+http://localhost:3333/ # acessar site

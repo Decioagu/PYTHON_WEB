@@ -1,0 +1,14 @@
+terminal:
+.\venv\Scripts\activate # ambiente virtual
+pip install selenium # permite automatizar navegadores da web
+
+Baixar drive conforme versão navegador:
+Passos abrir navegador googlechorme:
+Configurações ou "..." (3 pontinhos) => Ajuda => Sobra o Google Chorme: (Ex: "Versão 119.0.6045.200 (Versão oficial) 64 bits" )
+https://chromedriver.chromium.org/home
+
+# Doc Selenium:
+# https://selenium-python.readthedocs.io/locating-elements.html
+
+# Doc linha de comando "chromedriver":
+# https://peter.sh/experiments/chromium-command-line-switches/

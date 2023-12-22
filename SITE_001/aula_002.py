@@ -5,6 +5,7 @@
 # código. Já o bs4.BeautifulSoup é responsável por interpretar os dados HTML
 # em formato de objetos Python para facilitar a vida do desenvolvedor.
 # - Doc: https://www.crummy.com/software/BeautifulSoup/bs4/doc.ptbr/
+# https://www.otaviomiranda.com.br/2020/normalizacao-unicode-em-python/
 # + Instalação
 # - pip install requests types-requests bs4
 
@@ -12,20 +13,24 @@
 import requests
 from bs4 import BeautifulSoup
 
-# url = 'http://127.0.0.1:3333/'
-url = 'http://localhost:3333/'
+
+url = 'http://localhost:3333/' # pagina desejada
 response = requests.get(url) # obter da web
-# raw_html = response.text # em texto
 raw_html = response.content # em texto (windows)
+
+
 '''
-    Beautiful Soup() é uma biblioteca Python para analisar documentos HTML e XML. 
+    BeautifulSoup() é uma biblioteca Python para analisar documentos HTML e XML. 
     Ele cria uma árvore de análise para páginas analisadas que podem ser usadas 
-    para extrair dados de HTML
+    para extrair dados de HTML:
 
     parsed_html = "extração de dados na web scraping"
 '''
-# parsed_html = BeautifulSoup(raw_html, 'html.parser', from_encoding='utf-8') # extrair (windows)
-parsed_html = BeautifulSoup(raw_html, 'html.parser') # extrair 
+parsed_html = BeautifulSoup(raw_html, 'html.parser', from_encoding='utf-8') # extrair (windows)
+
+# sistema operacional MAC ou LINUX
+# raw_html = response.text # em texto
+# parsed_html = BeautifulSoup(raw_html, 'html.parser') # extrair 
 
 print('===================================================================')
 
