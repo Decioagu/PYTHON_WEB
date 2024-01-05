@@ -59,7 +59,8 @@ from PySide6.QtWidgets import QApplication, QPushButton
 app = QApplication(sys.argv) # gerencia a aplicação
 
 # ====================== widgets ======================
-botao = QPushButton('Texto do botão') # botão 
+''' widgets são componentes visuais que são usados para criar interfaces gráficas do usuário '''
+botao = QPushButton('Texto do botão') # widget botão 
 botao.setStyleSheet('font-size: 30px; color: red;') # tamanho do botão
 # =====================================================
 

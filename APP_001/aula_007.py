@@ -29,37 +29,37 @@ app = QApplication(sys.argv) # gerencia a aplicação
 
 # ============= Gerenciamento "janela" ================
 window = QMainWindow() # uma classe que representa uma janela principal
-central_widget = QWidget() # gerencia janela criada
-window.setCentralWidget(central_widget) #  definir o conteúdo exibido no centro da janela principal
+central_widget = QWidget() # classe que gerencia janela criada
+window.setCentralWidget(central_widget) # definir o conteúdo exibido no centro da janela principal
 
 window.setWindowTitle('Minha janela bonita') # titulo da janela
 
 # =========== Gerenciamento Layout "janela"============
-layout = QGridLayout() # gerencia janela em forma de linha e coluna
-central_widget.setLayout(layout) # método = "Classe Container" para layout
+layout = QGridLayout() # classe que alinha os widget em linha e coluna (grade de exibição) 
+central_widget.setLayout(layout)  # definir o layout de um widget (tamanho, posição)
 
 # ====================== widgets ======================
-botao1 = QPushButton('Botão 1') # botão
+botao1 = QPushButton('Botão 1') # widget botão
 botao1.setStyleSheet('font-size: 70px;') # tamanho
 
-botao2 = QPushButton('Botão 2') # botão
+botao2 = QPushButton('Botão 2') # widget botão
 botao2.setStyleSheet('font-size: 40px;') # tamanho
 
-botao3 = QPushButton('Botão 3') # botão
+botao3 = QPushButton('Botão 3') # widget botão
 botao3.setStyleSheet('font-size: 40px;') # tamanho
 
-botao4 = QPushButton('Botão 4') # botão
+botao4 = QPushButton('Botão 4') # widget botão
 botao4.setStyleSheet('font-size: 40px;') # tamanho
 
-botao5 = QPushButton('Botão 5') # botão
+botao5 = QPushButton('Botão 5') # widget botão
 botao5.setStyleSheet('font-size: 40px;') # tamanho
 
 # grade de exibição na janela (principal)
-layout.addWidget(botao1, 1, 1, 1, 1) # (objeto, linha, coluna, expandir_linha, expandir_coluna)
-layout.addWidget(botao2, 1, 4, 3, 1) # (objeto, linha, coluna, expandir_linha, expandir_coluna)
-layout.addWidget(botao3, 2, 3, 1, 1) # (objeto, linha, coluna, expandir_linha, expandir_coluna)
-layout.addWidget(botao4, 3, 1, 2, 1) # (objeto, linha, coluna, expandir_linha, expandir_coluna)
-layout.addWidget(botao5, 4, 2, 2, 3) # (objeto, linha, coluna, expandir_linha, expandir_coluna)
+layout.addWidget(botao1, 1, 1, 1, 1) # (widget, linha, coluna, expandir_linha, expandir_coluna)
+layout.addWidget(botao2, 1, 4, 3, 1) # (widget, linha, coluna, expandir_linha, expandir_coluna)
+layout.addWidget(botao3, 2, 3, 1, 1) # (widget, linha, coluna, expandir_linha, expandir_coluna)
+layout.addWidget(botao4, 3, 1, 2, 1) # (widget, linha, coluna, expandir_linha, expandir_coluna)
+layout.addWidget(botao5, 4, 2, 2, 3) # (widget, linha, coluna, expandir_linha, expandir_coluna)
 
 # ================================= FUNÇÕES ====================================
 # função da ação a ser executada (Menu)
@@ -68,8 +68,8 @@ def slot_example(status_bar):
 
 # ================================ MENU ===================================
 menu = window.menuBar() # cria barra do menu
-primeiro_menu = menu.addMenu('Primeiro elemento do menu') # adicionar opção ao meu
-primeira_acao = primeiro_menu.addAction('Execução de ação') # Adicionar ação ao menu
+primeiro_menu = menu.addMenu('Primeiro elemento do menu') # widget = menu
+primeira_acao = primeiro_menu.addAction('Execução de ação') # widget = submenu de ação
 status_bar = window.statusBar() # usado para verificar status da janela principal (ação executada)
 primeira_acao.triggered.connect(lambda: slot_example(status_bar)) # função da ação a ser executada
 

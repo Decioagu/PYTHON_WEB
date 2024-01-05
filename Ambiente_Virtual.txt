@@ -48,6 +48,7 @@ pip freeze > requirements.txt (OBS: nome requirements.txt pode ser alterado)
 pip install -r .\requirements.txt (OBS: nome requirements.txt pode ser diferente)
 
 # ver versão do pacote
+pip show "pacote"
 pip index versions "pacote"
 
 # instalar versão pacote antigo código

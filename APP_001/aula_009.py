@@ -24,10 +24,11 @@ class MyWindow(QMainWindow): # superclasse que representa uma janela principal
         self.central_widget = QWidget() # gerencia janela criada
         self.setCentralWidget(self.central_widget) #  definir o conteúdo exibido no centro da janela principal
 
+        # Título da janela
         self.setWindowTitle('Minha janela bonita') # titulo da janela
 
         # =========== Gerenciamento Layout "janela"============
-        self.layout = QGridLayout() # gerencia janela em forma de linha e coluna (grade de exibição)
+        self.layout = QGridLayout() # classe que alinha os widget em linha e coluna (grade de exibição)
         self.central_widget.setLayout(self.layout) # método = "Classe Container" para layout
        
         # ====================== widgets =====================
@@ -43,16 +44,16 @@ class MyWindow(QMainWindow): # superclasse que representa uma janela principal
         self.botao5 = self.make_button('Botão 5') # método botão
         
         # grade de exibição na janela (self.layout)
-        self.layout.addWidget(self.botao1, 1, 1, 1, 1) # (objeto, linha, coluna, expandir_linha, expandir_coluna)
-        self.layout.addWidget(self.botao2, 1, 4, 3, 1) # (objeto, linha, coluna, expandir_linha, expandir_coluna)
-        self.layout.addWidget(self.botao3, 2, 3, 1, 1) # (objeto, linha, coluna, expandir_linha, expandir_coluna)
-        self.layout.addWidget(self.botao4, 3, 1, 2, 1) # (objeto, linha, coluna, expandir_linha, expandir_coluna)
-        self.layout.addWidget(self.botao5, 4, 2, 2, 3) # (objeto, linha, coluna, expandir_linha, expandir_coluna)
+        self.layout.addWidget(self.botao1, 1, 1, 1, 1) # (widget, linha, coluna, expandir_linha, expandir_coluna)
+        self.layout.addWidget(self.botao2, 1, 4, 3, 1) # (widget, linha, coluna, expandir_linha, expandir_coluna)
+        self.layout.addWidget(self.botao3, 2, 3, 1, 1) # (widget, linha, coluna, expandir_linha, expandir_coluna)
+        self.layout.addWidget(self.botao4, 3, 1, 2, 1) # (widget, linha, coluna, expandir_linha, expandir_coluna)
+        self.layout.addWidget(self.botao5, 4, 2, 2, 3) # (widget, linha, coluna, expandir_linha, expandir_coluna)
 
         # ================================ MENU ===================================
         self.menu = self.menuBar() # cria barra do menu
-        self.primeiro_menu = self.menu.addMenu('Primeiro elemento do menu') # adicionar opção ao meu
-        self.primeira_acao = self.primeiro_menu.addAction('Primeira de ação') # Adicionar ação ao menu
+        self.primeiro_menu = self.menu.addMenu('Primeiro elemento do menu') # widget = menu
+        self.primeira_acao = self.primeiro_menu.addAction('Primeira de ação') # widget = submenu de ação
         self.status_bar = self.statusBar() # usado para verificar status da janela principal (ação executada)
         self.primeira_acao.triggered.connect(self.primeiro_metodo) # função da ação a ser executada
         '''
@@ -70,7 +71,7 @@ class MyWindow(QMainWindow): # superclasse que representa uma janela principal
         
         self.status_bar.showMessage('Décio Santana de Aguiar') # ver mensagem (roda pé janela)
 
-        self.segunda_acao = self.primeiro_menu.addAction('Segunda ação') # Adicionar ação ao menu
+        self.segunda_acao = self.primeiro_menu.addAction('Segunda ação') # widget = submenu de ação
         self.segunda_acao.setCheckable(True) # permite que o botão represente um estado binário ativo ou inativo (Checkbox)
         self.segunda_acao.toggled.connect(self.segundo_metodo) # ".toggled" verifica alteração de status pelo usuário (Click)  
         self.segunda_acao.hovered.connect(self.segundo_metodo)
@@ -84,18 +85,48 @@ class MyWindow(QMainWindow): # superclasse que representa uma janela principal
     
     # ================================= Métodos ====================================
     @Slot()
-    def primeiro_metodo(self): # função "primeira_acao"
+    # função "primeira_acao"
+    def primeiro_metodo(self): 
         self.status_bar.showMessage('O meu slot foi executado')
        
     @Slot()
-    def segundo_metodo(self): # função "segunda_acao"
+    # função "segunda_acao"
+    def segundo_metodo(self): 
         print('Está marcado?', self.segunda_acao.isChecked()) # isChecked() retorna um valor booleano indicando pelo (Checkbox)
-
-    def make_button(self, text): # método botão
-        btn = QPushButton(text) # botão
+    
+    # método botão
+    def make_button(self, text): 
+        btn = QPushButton(text) # widget botão
         btn.setStyleSheet('font-size: 40px;') # tamanho
         return btn
+    ''' 
+    Em PySide6, um slot é uma função ou método que pode ser conectado a um sinal. 
+    Um sinal é um evento que é emitido por um widget ou outro objeto. 
+    Quando um sinal é emitido, ele envia dados para todos os slots que estão conectados a ele.
     
+    @Slot() É um decorador que marca uma função Python como um slot,
+    nem sempre obrigatório.
+
+    Conexões de slot de sinal:
+    Ele permite que as funções sejam invocadas como uma resposta a sinais emitidos, 
+    muitas vezes acionados por interações ou eventos do usuário.
+    Exemplo: O sinal de um botão pode ser conectado a uma função de slot que manipula 
+    a ação de clique no botão.clicked()
+
+    Verificação de tipo e segurança:
+    Os slots declaram seus tipos de argumento esperados, garantindo a compatibilidade de tipos 
+    durante as conexões de slot de sinal. Isso evita possíveis erros e incompatibilidades.
+
+    Meta-informações para Qt:
+    O decorador fornece ao sistema de meta-objetos do Qt informações sobre o slot, 
+    facilitando a introspecção e recursos dinâmicos.
+
+    OBS:
+    @Slot() nem sempre obrigatório:
+    Embora recomendado para segurança de tipo e introspecção, os slots podem tecnicamente 
+    funcionar sem o decorador "@Slot()" em certos casos. No entanto, é considerada uma boa prática 
+    usá-lo de forma consistente.
+    '''
 
 # ============ Gerenciamento "aplicação" ==============
 app = QApplication(sys.argv) # gerencia a aplicação

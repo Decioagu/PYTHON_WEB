@@ -25,31 +25,31 @@ window.setCentralWidget(central_widget) #  definir o conteúdo exibido no centro
 window.setWindowTitle('Minha janela bonita') # titulo da janela
 
 # =========== Gerenciamento Layout "janela"============
-layout = QGridLayout() # gerencia janela em forma de linha e coluna (grade de exibição)
+layout = QGridLayout() # classe que alinha os widget em linha e coluna (grade de exibição) 
 central_widget.setLayout(layout) # método = "Classe Container" para layout
 
 # ====================== widgets =====================
-botao1 = QPushButton('Botão 1') # botão
+botao1 = QPushButton('Botão 1') # widget botão
 botao1.setStyleSheet('font-size: 70px;') # tamanho
 
-botao2 = QPushButton('Botão 2') # botão
+botao2 = QPushButton('Botão 2') # widget botão
 botao2.setStyleSheet('font-size: 40px;') # tamanho
 
-botao3 = QPushButton('Botão 3') # botão
+botao3 = QPushButton('Botão 3') # widget botão
 botao3.setStyleSheet('font-size: 40px;') # tamanho
 
-botao4 = QPushButton('Botão 4') # botão
+botao4 = QPushButton('Botão 4') # widget botão
 botao4.setStyleSheet('font-size: 40px;') # tamanho
 
-botao5 = QPushButton('Botão 5') # botão
+botao5 = QPushButton('Botão 5') # widget botão
 botao5.setStyleSheet('font-size: 40px;') # tamanho
 
 # grade de exibição na janela (layout)
-layout.addWidget(botao1, 1, 1, 1, 1) # (objeto, linha, coluna, expandir_linha, expandir_coluna)
-layout.addWidget(botao2, 1, 4, 3, 1) # (objeto, linha, coluna, expandir_linha, expandir_coluna)
-layout.addWidget(botao3, 2, 3, 1, 1) # (objeto, linha, coluna, expandir_linha, expandir_coluna)
-layout.addWidget(botao4, 3, 1, 2, 1) # (objeto, linha, coluna, expandir_linha, expandir_coluna)
-layout.addWidget(botao5, 4, 2, 2, 3) # (objeto, linha, coluna, expandir_linha, expandir_coluna)
+layout.addWidget(botao1, 1, 1, 1, 1) # (widget, linha, coluna, expandir_linha, expandir_coluna)
+layout.addWidget(botao2, 1, 4, 3, 1) # (widget, linha, coluna, expandir_linha, expandir_coluna)
+layout.addWidget(botao3, 2, 3, 1, 1) # (widget, linha, coluna, expandir_linha, expandir_coluna)
+layout.addWidget(botao4, 3, 1, 2, 1) # (widget, linha, coluna, expandir_linha, expandir_coluna)
+layout.addWidget(botao5, 4, 2, 2, 3) # (widget, linha, coluna, expandir_linha, expandir_coluna)
 
 # ================================= FUNÇÕES ====================================
 @Slot()
@@ -70,10 +70,39 @@ def terceiro_slot(action): # função "botao1.clicked"
         segundo_slot(action.isChecked()) # isChecked() retorna um valor booleano indicando pelo (Checkbox)
     return inner
 
+    ''' 
+    Em PySide6, um slot é uma função ou método que pode ser conectado a um sinal. 
+    Um sinal é um evento que é emitido por um widget ou outro objeto. 
+    Quando um sinal é emitido, ele envia dados para todos os slots que estão conectados a ele.
+    
+    @Slot() É um decorador que marca uma função Python como um slot,
+    nem sempre obrigatório.
+
+    Conexões de slot de sinal:
+    Ele permite que as funções sejam invocadas como uma resposta a sinais emitidos, 
+    muitas vezes acionados por interações ou eventos do usuário.
+    Exemplo: O sinal de um botão pode ser conectado a uma função de slot que manipula 
+    a ação de clique no botão.clicked()
+
+    Verificação de tipo e segurança:
+    Os slots declaram seus tipos de argumento esperados, garantindo a compatibilidade de tipos 
+    durante as conexões de slot de sinal. Isso evita possíveis erros e incompatibilidades.
+
+    Meta-informações para Qt:
+    O decorador fornece ao sistema de meta-objetos do Qt informações sobre o slot, 
+    facilitando a introspecção e recursos dinâmicos.
+
+    OBS:
+    @Slot() nem sempre obrigatório:
+    Embora recomendado para segurança de tipo e introspecção, os slots podem tecnicamente 
+    funcionar sem o decorador "@Slot()" em certos casos. No entanto, é considerada uma boa prática 
+    usá-lo de forma consistente.
+    '''
+
 # ================================ MENU ===================================
 menu = window.menuBar() # cria barra do menu
-primeiro_menu = menu.addMenu('Primeiro elemento do menu') # adicionar opção ao meu
-primeira_acao = primeiro_menu.addAction('Primeira de ação') # Adicionar ação ao menu
+primeiro_menu = menu.addMenu('Primeiro elemento do menu') # widget = menu
+primeira_acao = primeiro_menu.addAction('Primeira de ação') # widget = submenu de ação
 status_bar = window.statusBar() # usado para verificar status da janela principal (ação executada)
 primeira_acao.triggered.connect(primeiro_slot(status_bar)) # função da ação a ser executada
 '''
@@ -93,7 +122,7 @@ documentação: https://doc.qt.io/qtforpython-6/PySide6/QtGui/QAction.html#qacti
 
 status_bar.showMessage('Décio Santana de Aguiar') # ver mensagem (roda pé janela)
 
-segunda_acao = primeiro_menu.addAction('Segunda ação')
+segunda_acao = primeiro_menu.addAction('Segunda ação') # widget = submenu de ação
 segunda_acao.setCheckable(True) # permite que o botão represente um estado binário ativo ou inativo (Checkbox)
 segunda_acao.toggled.connect(segundo_slot) # ".toggled" verifica alteração de status pelo usuário (Click) 
 segunda_acao.hovered.connect(terceiro_slot(segunda_acao))

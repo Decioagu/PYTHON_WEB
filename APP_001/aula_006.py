@@ -46,7 +46,7 @@ https://doc.qt.io/qt-6/layout.html
 # -> exec
 
 import sys
-from PySide6.QtWidgets import QApplication, QGridLayout, QPushButton, QWidget
+from PySide6.QtWidgets import QApplication, QGridLayout, QPushButton, QWidget, QLabel
 
 # ============ Gerenciamento "aplicação" ==============
 app = QApplication(sys.argv) # gerencia a aplicação
@@ -55,27 +55,31 @@ app = QApplication(sys.argv) # gerencia a aplicação
 central_widget = QWidget() # gerencia janela criada
 
 # =========== Gerenciamento Layout "janela"============
-layout = QGridLayout() # gerencia janela em forma de linha e coluna
+layout = QGridLayout() # classe que alinha os widget em linha e coluna (grade de exibição)
 central_widget.setLayout(layout) # método = "Classe Container" para layout
 
+texto = QLabel("Meu texto!!!") # adicionar texto
+layout.addWidget(texto, 0, 2,1,2) # (widget, linha, coluna, expandir_linha, expandir_coluna)
+texto.setStyleSheet('font-size: 20px; color: green') # tamanho e cor
+
 # ====================== widgets ======================
-botao1 = QPushButton('Botão 1') # botão
+botao1 = QPushButton('Botão 1') # widget botão 
 botao1.setStyleSheet('font-size: 70px;') # tamanho
 
-botao2 = QPushButton('Botão 2') # botão
+botao2 = QPushButton('Botão 2') # widget botão 
 botao2.setStyleSheet('font-size: 40px;') # tamanho
 
-botao3 = QPushButton('Botão 3') # botão
+botao3 = QPushButton('Botão 3') # widget botão 
 botao3.setStyleSheet('font-size: 40px;') # tamanho
 
-botao4 = QPushButton('Botão 4') # botão
+botao4 = QPushButton('Botão 4') # widget botão 
 botao4.setStyleSheet('font-size: 40px;') # tamanho
 
 # grade de exibição na janela (layout)
-layout.addWidget(botao1, 1, 1, 1, 1) # (objeto, linha, coluna, expandir_linha, expandir_coluna)
-layout.addWidget(botao2, 1, 4, 2, 1) # (objeto, linha, coluna, expandir_linha, expandir_coluna)
-layout.addWidget(botao3, 2, 1, 1, 3) # (objeto, linha, coluna, expandir_linha, expandir_coluna)
-layout.addWidget(botao4, 3, 3, 1, 1) # (objeto, linha, coluna, expandir_linha, expandir_coluna)
+layout.addWidget(botao1, 1, 1, 1, 1) # (widget, linha, coluna, expandir_linha, expandir_coluna)
+layout.addWidget(botao2, 1, 4, 2, 1) # (widget, linha, coluna, expandir_linha, expandir_coluna)
+layout.addWidget(botao3, 2, 1, 1, 3) # (widget, linha, coluna, expandir_linha, expandir_coluna)
+layout.addWidget(botao4, 3, 3, 1, 1) # (widget, linha, coluna, expandir_linha, expandir_coluna)
 
 # =================== exibição e loop =================
 central_widget.show()  # central_widget = QWidget() => gerencia hierarquia de widget |.show() => mostra janela
