@@ -1,4 +1,5 @@
 from PySide6.QtWidgets import QPushButton, QGridLayout
+import math
 from variaveis import (FONTE_MEDIO_SIZE, PRIMEIRA_COR, SEGUNDA_COR, TERCEIRA_COR, QUARTA_COR, 
                        QUINTA_COR, SEXTA_COR, SETIMA_COR)
 
@@ -102,18 +103,20 @@ class BotoesGrid(QGridLayout):
             ['7', '8', '9', '*'],
             ['4', '5', '6', '-'],
             ['1', '2', '3', '+'],
-            [ '', '0', '.', '='],
+            [ ' ', '0', '.', '='],
         ]
-        self._equationInitialValue = 'Sua conta'
+        print('linha 108) self.contador_auxiliar = 0')
+        self.contador_auxiliar = 0 # auxilia no controle do sinal negativo "-"
         self._num_esquerda = None # numero esquerda do operador
         self._num_direita = None # numero direita do operador
-        self._operador = None
-        self.equation = self._equationInitialValue
+        self._operador = None # operador matemático
+        self._equationInitialValue = 'Sua conta' # valor inicial da equação
+        self.equation = self._equationInitialValue # valor da equação
         self._makeGrid() # método  construção do teclado
 
 
     # ======================== Método ============================
-    # exibir Info acima display
+    # exibir Info acima display (EQUAÇÃO)
     @property
     def equation(self):
         return self._equation
@@ -129,7 +132,8 @@ class BotoesGrid(QGridLayout):
             for coluna_numero, botao_texto in enumerate(linha_info):
                 botao = Botoes(botao_texto) # estilo do texto no botão
 
-                # widgets interfaces gráficas do usuário (teclado)
+                # widgets interfaces gráficas do usuário (gerador os botões do teclado)
+                print('método _makeGrid => botão clicado...')
                 self.addWidget(botao, linha_number, coluna_numero)
 
                 # acionamento das funções (display)
@@ -137,10 +141,8 @@ class BotoesGrid(QGridLayout):
 
                 # Identifica clique no teclado (Click)
                 self._connectButtonClicked(botao, botaoSlot)
-                
-    
 
-    # identifica ação de (Click) no botão
+    # identifica ação de (Click) no botão "widgets"
     def _connectButtonClicked(self, botao, botaoSlot):
         botao.clicked.connect(botaoSlot) # (Click)
     
@@ -153,18 +155,30 @@ class BotoesGrid(QGridLayout):
 
     # método de inserção de texto no display
     def _insertButtonTextToDisplay(self, botao):
-        botao_texto = botao.text() # método que retorna uma str em um widget.
+        botao_texto = botao.text() # método que retorna uma str de um widget
 
         # se botão clicado for 'C'
         if botao_texto == 'C':
             print('método _insertButtonTextToDisplay => limpar')
             self._clear()
 
+        if botao_texto in '◀':
+            print('método _insertButtonTextToDisplay => backspace')
+            self.display.backspace()
+
+        if botao_texto == ' ':
+            print('método _insertButtonTextToDisplay => faz nada')
+            return
+
         # se botões clicado forem '+-/*'
-        if botao_texto in '+-/*':
+        if botao_texto in '+-/*^':
             print('método _insertButtonTextToDisplay => +=/*')
             self._operatorClicked(botao_texto) 
-            
+
+        # se botão clicado for '='
+        if botao_texto == '=':
+            print('método _insertButtonTextToDisplay => "="')
+            self._igualClicked()
         
         # concatena str no display na variável "newDisplayValue"
         newDisplayValue = self.display.text() + botao_texto 
@@ -172,35 +186,105 @@ class BotoesGrid(QGridLayout):
         # função "valor_numerico" é do (módulo "uteis")
         if valor_numerico(newDisplayValue): # se for número 
             print('método _insertButtonTextToDisplay =>', newDisplayValue)
+            print('linha 189) self.contador_auxiliar = 0')
+            self.contador_auxiliar = 1
             self.display.insert(botao_texto) # inserir um elemento em uma lista (ver no display)
 
-    # método para limpar informações do (display e info)
+    # método retorna as variáveis nas condições inicias
     def _clear(self):
-            print('Vou fazer outra coisa aqui')
-            self._num_esquerda = None # numero esquerda do operador
-            self._num_direita = None # numero direita do operador
-            self._operador = None
+            print('método _clear => Limpar display')
+            print('linha 196) self.contador_auxiliar = 0')
+            self.contador_auxiliar = 0
+            self._num_esquerda = None 
+            self._num_direita = None 
+            self._operador = None 
             self.equation = self._equationInitialValue
             self.display.clear()
 
-    #
+    # Click em operadores matemático '+-/*' (método _insertButtonTextToDisplay)
     def _operatorClicked(self, botao_texto):
-        print('método _operatorClicked =>', botao_texto)
-        display_texto = self.display.text()  # Deverá ser meu número "_num_esquerda"
-        self.display.clear()  # Limpa o display
+        display_texto = self.display.text()  # informação do display
+        
+        print('método _operatorClicked =>', display_texto, '(display)')
+        
+        # ================ logica de número negativo ================      
+        if botao_texto == '-' and self.contador_auxiliar == 0:
+            print('linha 212) self.contador_auxiliar = 1')
+            self.contador_auxiliar = 1
+            self.display.insert(botao_texto)
+        else:
+            print('linha 216) self.contador_auxiliar = 0')
+            self.contador_auxiliar = 0
+            self.display.clear()  # Limpa o display
+        # ============================================================
+                   
+        # Se JÁ houver número a esquerda e operador, altera operador. (Info do display)
+        if not self._operador is None: # se operador não estiver vazio
+            self._operador = botao_texto # altera operador
+            self.equation = f'{self._num_esquerda} {self._operador}' # altear (EQUAÇÃO)
+            print(f'método _operatorClicked => operador alterado para "{self._operador}"')
+            return self._equation
 
-        # Se a pessoa clicou no operador sem
-        # configurar qualquer número
-        if not display_texto.isdigit():
-            print('Não tem nada para colocar no valor da esquerda')
-            return
+        # Se NÃO houver número a esquerda, não faz nada, não será adicionado operador.
+        if not valor_numerico(display_texto): # se display sem número
+            print('método _operatorClicked => Display vazio...')
+            return # finaliza função
 
-        # Se houver algo no número da esquerda,
-        # não fazemos nada. Aguardaremos o número da direita.
-        if self._num_esquerda is None:
-            self._num_esquerda = float(display_texto)
+        # Se NÃO houver algum número no (Info do display), adicionar número a esquerda.
+        if self._num_esquerda is None: # se numero a esquerda for vazio 
+            self._num_esquerda = float(display_texto) # adicionar valor do display
+        
 
-        self._operador = botao_texto
-        self.equation = f'{self._num_esquerda} {self._operador} ??'
+        self._operador = botao_texto # valor do operador
+        self.equation = f'{self._num_esquerda} {self._operador}' # adicionar (EQUAÇÃO)
+
+    def _igualClicked(self):
+        display_texto = self.display.text() # informação do display
+
+        # se operador estiver vazio
+        if self._operador is None:
+            print('método igualClicked => Informação display vazio...')
+            return # finaliza função
+        
+        # se display estiver vazio
+        if not valor_numerico(display_texto): 
+            print('método igualClicked => Display vazio...')
+            return # finaliza função
+        
+        self._num_direita = float(display_texto) # valor do _num_direita 
+        self.equation = f'{self._num_esquerda} {self._operador} {self._num_direita}' # adicionar (EQUAÇÃO)      
+
+        # calcular
+        try:
+            if self._operador == '^':
+                 # calcular equação potência "^"
+                 resultado = math.pow(float(self._num_esquerda), float(self._num_direita)) 
+            else:
+                # calcular equação simples "+-/*"
+                resultado = eval(self.equation) 
+            '''
+            A função eval() em Python é uma função embutida que avalia uma expressão 
+            escrita como uma string e retorna o valor da expressão, exemplo:
+
+            # eval("1 + 2 * 3")
+            # eval("if x > 0: return x else return -x")
+            # eval("x and y")
+            # eval("abs(-10)")
+            '''
+        except ZeroDivisionError:
+            print('Erro divisão por zero')
+            # self.display.clear() # limpar display
+            self.display.setText('Erro divisão por zero') # mensagem de erro p/ usuário (display)
+        else:
+            self.display.clear() # limpar display
+            self.info.setText(f'{self.equation} = {resultado}') # exibir calculo na informação do display
+            self.display.setText(str(resultado)) # exibir resultado no display
+
+            # zerar valores em:
+            self._num_esquerda = None 
+            self._num_direita = None 
+            self._operador = None
+    
+
 
     

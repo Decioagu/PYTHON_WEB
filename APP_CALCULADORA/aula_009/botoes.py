@@ -104,16 +104,17 @@ class BotoesGrid(QGridLayout):
             ['1', '2', '3', '+'],
             [ '', '0', '.', '='],
         ]
-        self._equationInitialValue = 'Sua conta'
+        
         self._num_esquerda = None # numero esquerda do operador
         self._num_direita = None # numero direita do operador
         self._operador = None
+        self._equationInitialValue = 'Sua conta'
         self.equation = self._equationInitialValue
         self._makeGrid() # método  construção do teclado
 
 
     # ======================== Método ============================
-    # exibir Info acima display
+    # exibir Info acima display (EQUAÇÃO)
     @property
     def equation(self):
         return self._equation
@@ -138,6 +139,8 @@ class BotoesGrid(QGridLayout):
                 # Identifica clique no teclado (Click)
                 self._connectButtonClicked(botao, botaoSlot)
                 
+    
+
     # identifica ação de (Click) no botão
     def _connectButtonClicked(self, botao, botaoSlot):
         botao.clicked.connect(botaoSlot) # (Click)
@@ -161,7 +164,8 @@ class BotoesGrid(QGridLayout):
         # se botões clicado forem '+-/*'
         if botao_texto in '+-/*':
             print('método _insertButtonTextToDisplay => +=/*')
-            self._connectButtonClicked(botao, self._makeSlot(self._operatorClicked, botao))
+            self._operatorClicked(botao_texto) 
+            
         
         # concatena str no display na variável "newDisplayValue"
         newDisplayValue = self.display.text() + botao_texto 
@@ -173,29 +177,35 @@ class BotoesGrid(QGridLayout):
 
     # método para limpar informações do (display e info)
     def _clear(self):
-            print('Vou fazer outra coisa aqui')
+            print('método _clear => Limpar display')
             self._num_esquerda = None # numero esquerda do operador
             self._num_direita = None # numero direita do operador
             self._operador = None
             self.equation = self._equationInitialValue
             self.display.clear()
 
-    def _operatorClicked(self, botao):
-        botao_texto = botao.text()  # +-/* (etc...)
-        print( botao_texto)
+    # Click em operadores matemático '+-/*' (método _insertButtonTextToDisplay)
+    def _operatorClicked(self, botao_texto):
         display_texto = self.display.text()  # Deverá ser meu número "_num_esquerda"
+        print('método _operatorClicked =>', display_texto, '(display)')
         self.display.clear()  # Limpa o display
 
-        # Se a pessoa clicou no operador sem
-        # configurar qualquer número
-        if not display_texto.isdigit():
-            print('Não tem nada para colocar no valor da esquerda')
+        # Se JÁ houver número a esquerda e operador, altera operador. (Info do display)
+        if not self._operador is None: # se operador não estiver vazio
+            self._operador = botao_texto # altera operador
+            self.equation = f'{self._num_esquerda} {self._operador}' # altear (EQUAÇÃO)
+            return self._equation
+
+        # Se NÃO houver número a esquerda, não faz nada, não será adicionado operador.
+        if not valor_numerico(display_texto): # se display sem número
+            print('método _operatorClicked => Display vazio...')
             return
 
-        # Se houver algo no número da esquerda,
-        # não fazemos nada. Aguardaremos o número da direita.
-        if self._num_esquerda is None:
-            self._num_esquerda = float(display_texto)
+        # Se NÃO houver algum número no (Info do display), adicionar número a esquerda.
+        if self._num_esquerda is None: # se numero a esquerda for vazio 
+            self._num_esquerda = float(display_texto) # adicionar valor do display
 
-        self._operador = botao_texto
-        self.equation = f'{self._num_esquerda} {self._operador} ??'
+        self._operador = botao_texto # valor do operador
+        self.equation = f'{self._num_esquerda} {self._operador}' # adicionar (EQUAÇÃO)
+
+    
