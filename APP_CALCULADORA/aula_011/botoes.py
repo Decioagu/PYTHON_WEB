@@ -6,6 +6,7 @@ from variaveis import (FONTE_MEDIO_SIZE, PRIMEIRA_COR, SEGUNDA_COR, TERCEIRA_COR
 from display import Display, Info
 from PySide6.QtCore import Slot
 from uteis import valor_numerico
+from main_window import MainWindow
 
 class Botoes(QPushButton):
     def __init__(self, *args, **kwargs):
@@ -32,7 +33,7 @@ class Botoes(QPushButton):
         if caracter == '=':
             self.setStyleSheet(f"""
                                 QPushButton {{
-                                    background-color: {SEGUNDA_COR};
+                                    background-color: {SETIMA_COR};
                                     color: white;  
                                 }}
                                 :hover {{
@@ -90,21 +91,22 @@ class Botoes(QPushButton):
 
 # 1º botoeGrid = BotoesGrid(display, info)
 class BotoesGrid(QGridLayout):
-    def __init__(self, display: Display, info: Info, *args, **kwargs) -> None:
+    def __init__(self, display: Display, info: Info, window: MainWindow, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
 
-        self.display = display # (módulo "display")
-        self.info = info  # (módulo "display")
-        self._equation = '' # variável para manipulação de self.info em função "equation"
-
-        # teclado
+        # teclado (widgets)
         self._gridMask = [
-            ['C', '◀', '^', '/'],
+            ['C', '◀','^', '/'],
             ['7', '8', '9', '*'],
             ['4', '5', '6', '-'],
             ['1', '2', '3', '+'],
-            [ ' ', '0', '.', '='],
+            [' ', '0', '.', '='],
         ]
+
+        self.display = display # (módulo "display")
+        self.info = info  # (módulo "display")
+        self.window = window # (módulo "main_window")
+
         print('linha 108) self.contador_auxiliar = 0')
         self.contador_auxiliar = 0 # auxilia no controle do sinal negativo "-"
         self._num_esquerda = None # numero esquerda do operador
@@ -162,12 +164,13 @@ class BotoesGrid(QGridLayout):
             print('método _insertButtonTextToDisplay => limpar')
             self._clear()
 
-        if botao_texto in '◀':
+        if botao_texto == '◀':
             print('método _insertButtonTextToDisplay => backspace')
             self.display.backspace()
 
         if botao_texto == ' ':
             print('método _insertButtonTextToDisplay => faz nada')
+            self._showVazio('Sem função...')
             return
 
         # se botões clicado forem '+-/*'
@@ -189,6 +192,7 @@ class BotoesGrid(QGridLayout):
             print('linha 189) self.contador_auxiliar = 0')
             self.contador_auxiliar = 1 # nega uso de sinal negativo
             self.display.insert(botao_texto) # inserir um elemento em uma lista (ver no display)
+        
 
     # método retorna as variáveis nas condições inicias
     def _clear(self):
@@ -246,14 +250,16 @@ class BotoesGrid(QGridLayout):
     def _igualClicked(self):
         display_texto = self.display.text() # informação do display
 
-        # se operador estiver vazio
-        if self._operador is None:
-            print('método igualClicked => Informação display vazio...')
-            return # finaliza função
-        
         # se display estiver vazio
         if not valor_numerico(display_texto): 
             print('método igualClicked => Display vazio...')
+            self._showInfo('Display esta vazio.')
+            return # finaliza função
+
+        # se operador estiver vazio
+        if self._operador is None:
+            print('método igualClicked => Informação display vazio...')
+            self._showInfo('Falta definir operador.')
             return # finaliza função
         
         self._num_direita = float(display_texto) # valor do _num_direita 
@@ -279,7 +285,11 @@ class BotoesGrid(QGridLayout):
         except ZeroDivisionError:
             print('Erro divisão por zero')
             # self.display.clear() # limpar display
-            self.display.setText('Erro divisão por zero') # mensagem de erro p/ usuário (display)
+            # self.display.setText('Erro divisão por zero') # mensagem de erro p/ usuário (display)
+            self._showError('Erro, divisão por zero.')
+        except OverflowError:
+            print('Número muito grande')
+            self._showError('Número muito grande para calcular.')
         else:
             self.display.clear() # limpar display
             self.info.setText(f'{self.equation} = {resultado}') # exibir calculo na informação do display
@@ -290,6 +300,35 @@ class BotoesGrid(QGridLayout):
             self._num_direita = None 
             self._operador = None
     
+    # ================= Caixa de diálogo =================
+   
+    def _showError(self, text):
+        msgBox = self.window.makeMsgBox() # (módulo "main_window")
+        msgBox.setText(text) # exibi texto na caixa de diálogo
+        msgBox.setWindowTitle("Erro") # define o título da caixa de diálogo.
+        msgBox.setButtonText(1, "Fechar") # define os botões padrão da caixa de diálogo
+        msgBox.setInformativeText("Digite valor diferente de zero") # adiciona mensagem na caixa de diálogo
+        msgBox.setIcon(msgBox.Icon.Critical) # exibi ícone na caixa de diálogo
+        msgBox.exec() # executa a caixa de diálogo
 
+    def _showInfo(self, text):
+        msgBox = self.window.makeMsgBox() # (módulo "main_window")
+        msgBox.setText(text) # exibi texto na caixa de diálogo
+        msgBox.setIcon(msgBox.Icon.Information) # define o ícone da caixa de diálogo.
+        msgBox.setWindowTitle("Informação") # define o título da caixa de diálogo.
+        msgBox.setButtonText(1, "Fechar") # define os botões padrão da caixa de diálogo
+        msgBox.exec() # executa a caixa de diálogo
 
-    
+    def _showVazio(self, text):
+        msgBox = self.window.makeMsgBox() # (módulo "main_window")
+        msgBox.setText(text) # exibi texto na caixa de diálogo
+        msgBox.setIcon(msgBox.Icon.Warning) # define o ícone da caixa de diálogo.
+        msgBox.setWindowTitle("Vazio") # define o título da caixa de diálogo.
+        msgBox.setStandardButtons(msgBox.StandardButton.Ok | msgBox.StandardButton.Cancel) # define os botões padrão da caixa de diálogo.
+        result = msgBox.exec() # executa a caixa de diálogo
+
+        if result == msgBox.StandardButton.Ok:
+            print('Caixa de diálogo = OK')
+        elif result == msgBox.StandardButton.Cancel:
+            print('Caixa de diálogo = Cancel')
+    # ======================================================
