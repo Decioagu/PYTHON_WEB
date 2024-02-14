@@ -1,5 +1,5 @@
 # aula 338
-
+# pip install PySide6
 # PySide6 para GUI (interface gráfica) com Qt em Python - Instalação
 # - A seção original desse curso usou PyQt5 (estamos atualizando para PySide6)
 # - Essas bibliotecas (PySide e PyQt) usam a biblioteca Qt

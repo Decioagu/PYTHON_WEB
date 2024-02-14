@@ -5,7 +5,7 @@
     de software.
 '''
 
-# Selenium - Automatizando tarefas no navegador
+# Selenium - Automatizando tarefas no navegador (Aula 315)
 from pathlib import Path
 from time import sleep
 
@@ -44,7 +44,7 @@ if __name__ == '__main__':
     browser = make_chrome_browser(*options)
 
     # Abrir SITE
-    url = 'https://www.google.com.br/maps/' # SITE
+    url = 'https://www.google.com.br/' # SITE
     browser.get(url) # obter da web
 
     # Dorme por 10 segundos
