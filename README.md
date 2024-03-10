@@ -19,6 +19,10 @@ Para enviar um e-mail com Python, precisamos seguir os seguintes passos:
 - __Requests__ é uma biblioteca Python que fornece uma interface simples e elegante para __fazer solicitações HTTP__. Ela é muito popular entre desenvolvedores web e de APIs, pois permite enviar e receber dados de servidores HTTP de forma rápida e fácil.
 ---
 
+**Aula_APIpy**
+- Extração de dados utilizando biblioteca __Requests__ em um arquivo __JSON__.
+---
+
 **aula_002.py**
 - __BeautifulSoup__ é uma biblioteca Python para __analisar documentos HTML e XML__. Ele cria uma árvore de análise para páginas analisadas que podem ser usadas para extrair dados de HTML.
 ---
@@ -48,4 +52,14 @@ uma barra de ferramentas e widgets (objetos na janela).
 **aula_009.py**
 - Exemplo otimizado da __aula_008.py__ utilizando uma __Super Classe__ com __biblioteca QMainWindow()__ na construção de uma __janela principal__.  
 ---
+---
+
+## APP_CALCULADORA
+- __APP_CALCULADORA__ é a construção de um exercício passo a passo para desenvolvimento de uma cuculadora dividido em diversas aulas em sua construção, desenvolvida em __PySide6__. 
+- O __PySide6__ é uma biblioteca para desenvolvimento de interfaces gráficas (GUI) utilizada com a linguagem de programação Python. Ela permite a criação de aplicativos com janelas, botões, menus e outros elementos visuais de forma intuitiva e atraente.
+---
+---
+
+## QtDesigner_THREADS
+- O __Qt Designer__ é uma ferramenta usada para criar interfaces gráficas (GUIs) para aplicativos de software. Ele faz parte do framework Qt, que facilita a construção interfaces gráficas em subsunção a programação em __PySide6__.
 
