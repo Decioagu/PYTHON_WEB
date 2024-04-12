@@ -36,7 +36,7 @@ Para enviar um e-mail com Python, precisamos seguir os seguintes passos:
 
 ## APP_001
 **aula_005.py**
-- O __PySide__ é uma biblioteca Python que __fornece uma API__ para o toolkit Qt, um framework de desenvolvimento de __aplicações multiplataforma__. Com o PySide, você pode __criar interfaces gráficas de usuário__ utilizando componentes visuais como _botões, menus, caixas de diálogo e outros elementos_.
+- O __PySide6__ é uma biblioteca Python que __fornece uma API__ para o toolkit Qt, um framework de desenvolvimento de __aplicações multiplataforma__. Com o PySide, você pode __criar interfaces gráficas de usuário__ utilizando componentes visuais como _botões, menus, caixas de diálogo e outros elementos_.
 - O __método .setStyleSheet()__ atribui um __estilo__ para os __componentes__ no APP. O estilo pode ser uma string __contendo o código CSS__ do estilo ou um objeto QStylesheet.
 ---
 
