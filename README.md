@@ -19,12 +19,12 @@ Para enviar um e-mail com Python, precisamos seguir os seguintes passos:
 - __Requests__ é uma biblioteca Python que fornece uma interface simples e elegante para __fazer solicitações HTTP__. Ela é muito popular entre desenvolvedores web e de APIs, pois permite enviar e receber dados de servidores HTTP de forma rápida e fácil.
 ---
 
+**aula_002.py**
+- __BeautifulSoup__ é uma biblioteca Python para __analisar documentos HTML e XML__. Ele cria uma árvore de análise para páginas analisadas que podem ser usadas para extrair dados de HTML.
+
 **Aula_APIpy**
 - Extração de dados utilizando biblioteca __Requests__ em um arquivo __JSON__.
 ---
-
-**aula_002.py**
-- __BeautifulSoup__ é uma biblioteca Python para __analisar documentos HTML e XML__. Ele cria uma árvore de análise para páginas analisadas que podem ser usadas para extrair dados de HTML.
 ---
 ---
 
