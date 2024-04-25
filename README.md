@@ -21,10 +21,6 @@ Para enviar um e-mail com Python, precisamos seguir os seguintes passos:
 
 **aula_002.py**
 - __BeautifulSoup__ é uma biblioteca Python para __analisar documentos HTML e XML__. Ele cria uma árvore de análise para páginas analisadas que podem ser usadas para extrair dados de HTML.
-
-**Aula_APIpy**
-- Extração de dados utilizando biblioteca __Requests__ em um arquivo __JSON__.
----
 ---
 ---
 
